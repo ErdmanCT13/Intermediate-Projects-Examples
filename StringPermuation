@@ -1,0 +1,57 @@
+#include <iostream>
+#include <string>
+#include <windows.h>
+
+void permuteString(std::string);
+void permuteHelper(std::string, std::string);
+
+
+
+int main()
+{
+
+	
+	permuteString("MyName");
+
+	while (true)
+	{
+		Sleep(10000);
+	}
+
+}
+
+
+void permuteHelper(std::string s, std::string chosen)
+{
+	if (s.length() == 0)
+	{
+		std::cout << chosen << "\n";
+	}
+	else
+	{
+		for (int i = 0; i < s.length(); i++)
+		{
+			char c = s[i]; // use this value for re-insertiion during the deselect step (CHOOSE)
+			chosen += c; // use this to construct a string containing all characters chosen
+			s.erase(i, 1);	// delete whichever element of the string was selected so that the rest can be printed
+			//
+			permuteHelper(s, chosen); // do recursive function call, passing the current availableChars string, along with the (EXPLORE)
+			//
+			s.insert(i, 1, c); // (UNCHOOSE) 
+			chosen.erase(chosen.length() - 1, 1);
+
+		}
+
+	}
+
+}
+
+
+void permuteString(std::string input)
+{
+	permuteHelper(input, "");
+	
+
+}
+
+
