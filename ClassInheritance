@@ -1,0 +1,193 @@
+/* Carl Erdman
+Project 2
+Intermediate C++
+12/10/2017 */ 
+
+
+#include <iostream>
+
+
+using namespace std;
+
+
+
+
+class Person // person has 2 child classes, employee/student
+{
+
+protected:
+	
+	string name;
+
+	Person(string nameArg) 
+	{
+        	name = nameArg;
+    	}
+
+public:
+
+	string getName() 
+	{
+        	return name;
+    	}
+
+};
+
+class Employee : protected Person // contains 2 child classes, faculty/staff with different salaries and associated information
+{
+
+ 
+protected:
+	
+	string departmentName;	
+	
+	Employee(string nameArg, string departmentNameArg) : Person(nameArg), departmentName(departmentNameArg) {} // sets department name and employee name
+
+	
+
+public:
+		
+	
+	virtual	double getSalary() // gets salary
+	{
+		return 1000;
+	}
+		
+	string getName() // gets name
+	{
+		return name;
+	}
+
+};
+
+class Student: public Person // student is child of person
+{
+
+
+
+	string majorName; // contains unique value majorName
+
+public:
+
+	Student(string nameArg, string majorNameArg) : Person(nameArg), majorName(majorNameArg){} // public constructor with initializer list to set parent values
+
+
+
+	string getMajorName() // returns major name
+	{
+		return majorName;
+	}
+
+	string getName() // returns students name
+	{
+		return name;
+	}
+
+};
+
+
+class Staff: public Employee // almost identical to employee, but without classes, and returns constant salary
+{
+
+
+
+	bool partTime;
+	
+public:
+
+	Staff(string nameArg, bool partTimeArg, string  departmentNameArg) : Employee(nameArg, departmentNameArg), partTime(partTimeArg){}
+	
+	
+	double getSalary()
+	{
+
+		if(partTime == true)
+		{
+			return 500;
+		}
+		else
+		{
+			return 1000;
+		}
+
+	}
+	
+	
+	bool getPartTime()
+	{	
+		return partTime;
+	}
+
+};
+
+
+class Faculty: public Employee // has function getSalary that returns salary based on class (faculty or staff)
+{
+
+
+
+	
+	int numSummerCourses;
+
+public: 
+
+	Faculty(string nameArg, int summerCoursesArg, string departmentNameArg) : Employee(nameArg, departmentNameArg), numSummerCourses(summerCoursesArg){}
+
+	double getSalary() // returns salary
+	{
+
+		{
+			return (1000) + (250 * numSummerCourses);
+		}
+	
+	}
+
+
+	string getDepartmentName()  // return department name
+	{
+		return departmentName;
+	}
+	
+	int getnumSummerCourses() // return number of summer courses
+	{
+		return numSummerCourses;
+	}
+
+};
+
+
+class PrettyPrinter // class to print out values and test code
+{
+
+public:	
+
+	void prettyPrint(Student *student) // accepts student pointer and prints out all relevant values 
+	{
+		cout << "Student name: " << (*student).getName() << "\nMajor: " << (*student).getMajorName() << "\n"; 
+	}
+	
+	void prettyPrint(Employee *emp) // accepts employee pointer and prints out all relevant values
+	{
+		cout << "Employee name: " << (*emp).getName() << "\nSalary: " << (*emp).getSalary() << "\n";	
+	}
+	
+};
+
+
+int main() // contains all main function calls
+{
+
+// Faculty(nameArg, #ofsummercourses, departmentName)
+// Staff(name, partTime)
+// Student(nameArg, majorName)
+Faculty Jeff("Jeff", 6, "Economics");
+Student Casey("Casey", "History");
+Staff Lexi("Lexi", true, "HR"); // I ended up not including the department for 
+
+PrettyPrinter pp;
+pp.prettyPrint(&Jeff);
+pp.prettyPrint(&Casey);
+pp.prettyPrint(&Lexi);	
+
+return 0;
+}
